@@ -1,7 +1,7 @@
-package org.payment.processor.repository;
+package org.payment.processor.repository.validation.client;
 
-import org.payment.processor.contracts.TransactionRequest;
-import org.payment.processor.contracts.ValidationResult;
+import org.payment.processor.contracts.PaymentResponse;
+import org.payment.processor.repository.validation.contracts.PaymentRequest;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -19,10 +19,10 @@ public class SendTransactionValidation {
         this.env = env;
     }
 
-    public ValidationResult validateTransaction(TransactionRequest request){
-        ValidationResult result = null;
+    public PaymentResponse validateTransaction(PaymentRequest request){
+        PaymentResponse result = null;
         try {
-            result = restTemplate.postForObject(Objects.requireNonNull(env.getProperty("services.payment.validator")), request, ValidationResult.class);
+            result = restTemplate.postForObject(Objects.requireNonNull(env.getProperty("services.payment.validator")), request, PaymentResponse.class);
        }catch (Exception ex){
 
        }

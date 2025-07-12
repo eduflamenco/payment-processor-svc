@@ -9,3 +9,8 @@ server:
 services:
   payment:
     validator: http://localhost:8090/payment/validate
+
+application:
+  properties:
+    account-id: AB84563215478451
+    account-owner: "American Bank"
