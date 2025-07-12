@@ -1,0 +1,11 @@
+spring:
+  profiles:
+    active: build
+
+server:
+  port: 8080
+
+
+services:
+  payment:
+    validator: http://localhost:8090/payment/validate
