@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:12-alpine
@@ -7,7 +5,7 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: secret
-      POSTGRES_DB: payment
+      POSTGRES_DB: bank_ops
     ports:
       - "5432:5432"
     networks:
@@ -26,33 +24,31 @@ services:
       - springnet
 
   springboot-app-1:
-    image: edflamenco/transaction-svc:v1
+    image: edflamenco/payment-executor:v1
     build: .
-    container_name: transaction-svc
+    container_name: payment-executor
     ports:
       - "8090:8090"
     networks:
       - springnet
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres12:5432/bank
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres12:5432/bank_ops
       SPRING_RABBITMQ_HOST: rabbitmq
-      SPRING_REDIS_HOST: redis-srvr
     depends_on:
       - postgres
       - rabbitmq
-      - redis
 
   springboot-app-2:
-    image: edflamenco/payment-svc:v1
+    image: edflamenco/payment-processor:v1
     build: .
-    container_name: payment-svc
+    container_name: payment-processor
     ports:
       - "8080:8080"
     networks:
       - springnet
     environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres12:5432/bank_ops
       SPRING_RABBITMQ_HOST: rabbitmq
-      SPRING_REDIS_HOST: redis-srvr
     depends_on:
       - springboot-app-1
 

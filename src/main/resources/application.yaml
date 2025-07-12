@@ -8,7 +8,7 @@ server:
 
 services:
   payment:
-    validator: http://localhost:8090/payment/validate
+    validator: http://payment-executor:8090/payment/validate
 
 application:
   properties:
